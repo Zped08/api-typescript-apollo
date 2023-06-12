@@ -8,10 +8,18 @@ export const Link = objectType({
     t.nonNull.int("id"); // 3
     t.nonNull.string("description"); // 4
     t.nonNull.string("url"); // 5
+    t.field("postedBy", {
+      type: "User",
+      resolve(parent, args, context) {
+        return context.prisma.link
+          .findUnique({ where: { id: parent.id } })
+          .postedBy();
+      },
+    });
   },
 });
 
-let links: NexusGenObjects["Link"][] = [
+/* let links: NexusGenObjects["Link"][] = [
   // 1
   {
     id: 1,
@@ -23,7 +31,7 @@ let links: NexusGenObjects["Link"][] = [
     url: "graphql.org",
     description: "GraphQL official website",
   },
-];
+]; */
 
 export const LinkQuery = extendType({
   // 2
